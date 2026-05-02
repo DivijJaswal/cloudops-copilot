@@ -102,6 +102,8 @@ yarn test:e2e
 
 The E2E suite starts an in-memory Incident API and a Vite dashboard automatically, so it does not require Postgres, Ollama, or Docker.
 
+CI runs the same E2E suite against the system Chrome available on the GitHub Ubuntu runner by setting `PLAYWRIGHT_BROWSER_CHANNEL=chrome`, so the workflow does not need a separate Playwright browser install step.
+
 Start the local PostgreSQL database:
 
 ```bash

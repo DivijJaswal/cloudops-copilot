@@ -4,6 +4,7 @@ const apiPort = Number(process.env.E2E_API_PORT ?? 18080);
 const dashboardPort = Number(process.env.E2E_DASHBOARD_PORT ?? 15173);
 const apiUrl = `http://127.0.0.1:${apiPort}`;
 const dashboardUrl = `http://127.0.0.1:${dashboardPort}`;
+const browserChannel = process.env.PLAYWRIGHT_BROWSER_CHANNEL;
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -30,8 +31,11 @@ export default defineConfig({
   ],
   projects: [
     {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] }
+      name: browserChannel ? `chromium-${browserChannel}` : "chromium",
+      use: {
+        ...devices["Desktop Chrome"],
+        ...(browserChannel ? { channel: browserChannel } : {})
+      }
     }
   ]
 });

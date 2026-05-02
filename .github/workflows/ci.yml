@@ -7,6 +7,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_BROWSER_CHANNEL: chrome
 
     steps:
       - name: Check out repository
@@ -35,8 +37,8 @@ jobs:
       - name: Compile Python triage agent
         run: python -m compileall -q services/triage-agent/app services/triage-agent/tests
 
-      - name: Install Playwright browser
-        run: yarn playwright install --with-deps chromium
+      - name: Check system Chrome
+        run: google-chrome --version
 
       - name: Run unit tests
         run: yarn test
