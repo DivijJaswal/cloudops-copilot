@@ -257,7 +257,7 @@ If your cluster runs Prometheus Operator, apply the optional ServiceMonitor to s
 kubectl apply -f infra/observability/k8s/incident-api-servicemonitor.yaml
 ```
 
-The ServiceMonitor selects the `incident-api` service and scrapes its named `http` port at `/metrics`. This optional manifest requires the Prometheus Operator `ServiceMonitor` CRD, so the default `yarn validate:k8s` check validates the core app manifests under `infra/k8s/`.
+The ServiceMonitor selects the `incident-api` service and scrapes its named `http` port at `/metrics`. This optional manifest requires the Prometheus Operator `ServiceMonitor` CRD, so the default `yarn validate:k8s` check performs offline validation for the core app manifests under `infra/k8s/` without requiring a live Kubernetes cluster.
 
 ## Resume Target
 
