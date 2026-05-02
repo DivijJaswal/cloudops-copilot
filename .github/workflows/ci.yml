@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v1.31.0
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install JavaScript dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install Python dependencies
+        run: python -m pip install -r services/triage-agent/requirements.txt
+
+      - name: Compile Python triage agent
+        run: python -m compileall -q services/triage-agent/app services/triage-agent/tests
+
+      - name: Install Playwright browser
+        run: yarn playwright install --with-deps chromium
+
+      - name: Run unit tests
+        run: yarn test
+
+      - name: Build dashboard
+        run: yarn workspace @cloudops/dashboard build
+
+      - name: Validate Docker Compose
+        run: docker compose config
+
+      - name: Validate observability Docker Compose profile
+        run: docker compose --profile observability config
+
+      - name: Validate Kubernetes manifests
+        run: yarn validate:k8s
+
+      - name: Run browser E2E tests
+        run: yarn test:e2e

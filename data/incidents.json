@@ -1,0 +1,69 @@
+[
+  {
+    "id": "INC-1001",
+    "service": "partner-api",
+    "title": "Control-plane patch ingest failures after rollout",
+    "severity": "SEV2",
+    "status": "OPEN",
+    "environment": "prod",
+    "region": "us-phoenix-1",
+    "createdAt": "2026-05-01T09:15:00Z",
+    "owner": "db-platform",
+    "deploymentVersion": "partner-api.2026.05.01-rc4",
+    "signals": [
+      "5xx rate above 8 percent",
+      "work request retries exhausted",
+      "patch ingest queue age above threshold"
+    ],
+    "logs": [
+      "ERROR PatchIngestWorker failed to deserialize payload for workRequestId=wr-9021",
+      "WARN retry policy exhausted for control-plane patch event",
+      "INFO previous healthy deployment partner-api.2026.04.28"
+    ]
+  },
+  {
+    "id": "INC-1002",
+    "service": "oneview",
+    "title": "Storage scale-up workflow blocked by safety validation",
+    "severity": "SEV3",
+    "status": "TRIAGED",
+    "environment": "prod",
+    "region": "us-ashburn-1",
+    "createdAt": "2026-05-01T12:40:00Z",
+    "owner": "oneview",
+    "deploymentVersion": "oneview.2026.04.30",
+    "signals": [
+      "operator action denied",
+      "capacity dashboard stale for 12 minutes",
+      "validation failure rate above baseline"
+    ],
+    "logs": [
+      "ERROR StorageScaleUpValidator rejected request: missing tenancy allowlist",
+      "WARN capacity refresh skipped due to upstream metadata timeout",
+      "INFO safety gate prevented scale-up execution"
+    ]
+  },
+  {
+    "id": "INC-1003",
+    "service": "triage-agent",
+    "title": "Runbook retrieval latency elevated",
+    "severity": "SEV4",
+    "status": "OPEN",
+    "environment": "stage",
+    "region": "us-sanjose-1",
+    "createdAt": "2026-05-01T15:05:00Z",
+    "owner": "platform-ai",
+    "deploymentVersion": "triage-agent.0.1.0",
+    "signals": [
+      "p95 latency above 1200ms",
+      "runbook search timeout count increased",
+      "no user-visible outage"
+    ],
+    "logs": [
+      "WARN runbook index query exceeded latency budget",
+      "INFO fallback keyword retrieval returned 2 candidate runbooks",
+      "INFO cache hit ratio 42 percent"
+    ]
+  }
+]
+

@@ -1,0 +1,39 @@
+[
+  {
+    "id": "RB-API-001",
+    "title": "Control-plane patch ingest failure",
+    "service": "partner-api",
+    "keywords": ["patch", "ingest", "work request", "control-plane", "deserialize"],
+    "steps": [
+      "Check recent deployment and payload schema changes.",
+      "Compare failed work request payload with the latest accepted schema.",
+      "Pause rollout if failure rate continues above threshold.",
+      "Replay one failed payload in staging before production retry."
+    ]
+  },
+  {
+    "id": "RB-STORAGE-002",
+    "title": "Storage scale-up safety gate",
+    "service": "oneview",
+    "keywords": ["storage", "scale-up", "allowlist", "safety", "capacity"],
+    "steps": [
+      "Verify tenancy allowlist and operator permission state.",
+      "Refresh upstream metadata and compare dashboard freshness.",
+      "Confirm safety gate reason before manual override.",
+      "Attach validation logs to the support ticket."
+    ]
+  },
+  {
+    "id": "RB-OBS-003",
+    "title": "Runbook search latency",
+    "service": "triage-agent",
+    "keywords": ["runbook", "latency", "cache", "timeout", "retrieval"],
+    "steps": [
+      "Check cache hit ratio and index query latency.",
+      "Use fallback keyword retrieval if vector retrieval times out.",
+      "Inspect recent runbook ingestion changes.",
+      "Scale triage-agent workers if sustained latency continues."
+    ]
+  }
+]
+

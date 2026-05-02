@@ -1,0 +1,86 @@
+[
+  {
+    "id": "CASE-PATCH-INGEST-001",
+    "incidentId": "HIST-2001",
+    "service": "partner-api",
+    "title": "Patch ingest deserialization failures after rollout",
+    "category": "rollout",
+    "severity": "SEV2",
+    "signals": [
+      "5xx rate increased immediately after deployment",
+      "work request retries exhausted",
+      "payload schema mismatch in patch ingest path"
+    ],
+    "rootCause": "PatchIngestWorker accepted a new payload shape while the deployed parser still expected the previous schema.",
+    "resolutionSteps": [
+      "Pause rollout and compare current build with last known healthy build.",
+      "Replay one failed payload in staging with debug logging enabled.",
+      "Patch parser compatibility or roll back the ingest worker.",
+      "Resume rollout only after work request retry age returns to baseline."
+    ],
+    "runbookIds": ["RB-API-001"]
+  },
+  {
+    "id": "CASE-STORAGE-SAFETY-002",
+    "incidentId": "HIST-2002",
+    "service": "oneview",
+    "title": "Storage scale-up blocked by safety gate",
+    "category": "capacity",
+    "severity": "SEV3",
+    "signals": [
+      "operator action denied",
+      "capacity dashboard stale",
+      "tenancy allowlist validation failed"
+    ],
+    "rootCause": "The safety validator rejected scale-up because tenancy metadata was stale and the allowlist entry was missing.",
+    "resolutionSteps": [
+      "Refresh upstream tenancy metadata.",
+      "Verify allowlist state before retrying scale-up.",
+      "Attach validator logs to the support ticket.",
+      "Retry only after the safety gate reports a fresh validation timestamp."
+    ],
+    "runbookIds": ["RB-STORAGE-002"]
+  },
+  {
+    "id": "CASE-RUNBOOK-LATENCY-003",
+    "incidentId": "HIST-2003",
+    "service": "triage-agent",
+    "title": "Runbook retrieval latency elevated",
+    "category": "latency",
+    "severity": "SEV4",
+    "signals": [
+      "p95 latency exceeded retrieval budget",
+      "runbook index cache hit ratio dropped",
+      "fallback keyword retrieval returned candidates"
+    ],
+    "rootCause": "Runbook index cache churn caused vector retrieval to miss the latency budget and fall back to keyword search.",
+    "resolutionSteps": [
+      "Check cache hit ratio and vector index query latency.",
+      "Keep fallback keyword retrieval enabled while cache warms.",
+      "Inspect recent runbook ingestion changes.",
+      "Scale triage-agent workers if sustained latency continues."
+    ],
+    "runbookIds": ["RB-OBS-003"]
+  },
+  {
+    "id": "CASE-DEPENDENCY-CVE-004",
+    "incidentId": "HIST-2004",
+    "service": "incident-api",
+    "title": "Dependency remediation after CVE scan failure",
+    "category": "dependency",
+    "severity": "SEV3",
+    "signals": [
+      "base image scan failed",
+      "BOM dependency version below approved baseline",
+      "release gate blocked"
+    ],
+    "rootCause": "The service image was built from an older base image and inherited a vulnerable transitive dependency.",
+    "resolutionSteps": [
+      "Update base image and service BOM together.",
+      "Regenerate dependency lockfile and rerun vulnerability scan.",
+      "Run smoke tests before production rollout.",
+      "Document the CVE and remediation version in release notes."
+    ],
+    "runbookIds": []
+  }
+]

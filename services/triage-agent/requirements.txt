@@ -1,0 +1,6 @@
+Flask==3.0.3
+flask-cors==4.0.1
+gunicorn==23.0.0
+langgraph==1.1.6
+psycopg[binary]==3.2.13
+requests==2.32.3

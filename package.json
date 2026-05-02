@@ -1,0 +1,45 @@
+{
+  "name": "cloudops-copilot",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "yarn@1.22.22",
+  "description": "AI incident triage and rollout safety platform.",
+  "workspaces": [
+    "services/incident-api",
+    "apps/dashboard"
+  ],
+  "scripts": {
+    "test": "yarn workspace @cloudops/incident-api test && node scripts/run-python-tests.mjs",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "validate:compose": "docker compose config && docker compose --profile observability config",
+    "validate:k8s": "kubectl apply --dry-run=client --validate=false -f infra/k8s/",
+    "ci": "yarn test && yarn workspace @cloudops/dashboard build && yarn validate:compose && yarn validate:k8s && yarn test:e2e",
+    "doctor": "node scripts/doctor.mjs",
+    "doctor:strict": "node scripts/doctor.mjs --strict",
+    "eval:triage": "node scripts/eval-triage.mjs",
+    "local:start": "node scripts/local-start.mjs",
+    "record:demo": "node scripts/record-demo-video.mjs",
+    "demo:seed": "node scripts/demo-seed.mjs",
+    "demo:reset": "node scripts/demo-reset.mjs --yes",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "llm:pull": "docker compose exec ollama ollama pull llama3.1 && docker compose exec ollama ollama pull nomic-embed-text",
+    "auth:token": "node scripts/create-demo-token.mjs",
+    "dev:api": "yarn workspace @cloudops/incident-api dev",
+    "dev:dashboard": "yarn workspace @cloudops/dashboard dev",
+    "dev:agent": "python3 services/triage-agent/app/server.py",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down"
+  },
+  "keywords": [
+    "incident-triage",
+    "observability",
+    "ai-agent",
+    "kubernetes",
+    "rollout-safety"
+  ],
+  "devDependencies": {
+    "@playwright/test": "^1.59.1"
+  }
+}

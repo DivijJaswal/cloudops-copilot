@@ -1,0 +1,75 @@
+[
+  {
+    "id": "EVAL-PATCH-001",
+    "incident": {
+      "id": "EVAL-PATCH-001",
+      "service": "partner-api",
+      "title": "Control-plane patch ingest retries after rollout",
+      "severity": "SEV2",
+      "status": "OPEN",
+      "environment": "prod",
+      "region": "us-phoenix-1",
+      "owner": "db-platform",
+      "deploymentVersion": "partner-api.eval",
+      "signals": [
+        "patch ingest queue age above threshold",
+        "work request retry budget exhausted"
+      ],
+      "logs": [
+        "ERROR PatchIngestWorker failed to deserialize control-plane payload",
+        "WARN retry policy exhausted for patch event"
+      ]
+    },
+    "expectedCategory": "rollout",
+    "expectedRunbookIds": ["RB-API-001"]
+  },
+  {
+    "id": "EVAL-STORAGE-002",
+    "incident": {
+      "id": "EVAL-STORAGE-002",
+      "service": "oneview",
+      "title": "Storage scale-up blocked by validation",
+      "severity": "SEV3",
+      "status": "OPEN",
+      "environment": "prod",
+      "region": "us-ashburn-1",
+      "owner": "oneview",
+      "deploymentVersion": "oneview.eval",
+      "signals": [
+        "storage scale-up denied",
+        "capacity dashboard stale",
+        "tenancy allowlist missing"
+      ],
+      "logs": [
+        "ERROR StorageScaleUpValidator rejected request: missing tenancy allowlist"
+      ]
+    },
+    "expectedCategory": "capacity",
+    "expectedRunbookIds": ["RB-STORAGE-002"]
+  },
+  {
+    "id": "EVAL-LATENCY-003",
+    "incident": {
+      "id": "EVAL-LATENCY-003",
+      "service": "triage-agent",
+      "title": "Runbook retrieval timeout elevated",
+      "severity": "SEV4",
+      "status": "OPEN",
+      "environment": "stage",
+      "region": "us-sanjose-1",
+      "owner": "platform-ai",
+      "deploymentVersion": "triage-agent.eval",
+      "signals": [
+        "p95 latency above budget",
+        "runbook search timeout count increased",
+        "cache hit ratio below baseline"
+      ],
+      "logs": [
+        "WARN runbook index query exceeded latency budget",
+        "INFO fallback keyword retrieval returned candidates"
+      ]
+    },
+    "expectedCategory": "latency",
+    "expectedRunbookIds": ["RB-OBS-003"]
+  }
+]

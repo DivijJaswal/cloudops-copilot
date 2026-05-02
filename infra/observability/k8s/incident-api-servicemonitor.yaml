@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: incident-api
+  namespace: cloudops-copilot
+  labels:
+    app: incident-api
+spec:
+  namespaceSelector:
+    matchNames:
+      - cloudops-copilot
+  selector:
+    matchLabels:
+      app: incident-api
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 5s
