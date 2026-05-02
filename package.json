@@ -13,7 +13,7 @@
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "validate:compose": "docker compose config && docker compose --profile observability config",
-    "validate:k8s": "kubectl apply --dry-run=client --validate=false -f infra/k8s/",
+    "validate:k8s": "kubectl create --dry-run=client --validate=false -f infra/k8s/",
     "ci": "yarn test && yarn workspace @cloudops/dashboard build && yarn validate:compose && yarn validate:k8s && yarn test:e2e",
     "doctor": "node scripts/doctor.mjs",
     "doctor:strict": "node scripts/doctor.mjs --strict",
